@@ -1,12 +1,14 @@
-# Belief Propagation for LDPC under BSC
+# Belief Propagation for LDPC codes under BSC channel with/without noise
 import csv
 import math
 from random import choices
 import numpy as np
 
+ # IF needed AWGN Channel noise = np.random.normal(0,1,10) 
+
 with open('H1.txt', 'r') as H:
     sparse = csv.reader(H)
-    sparse_data = list(sparse)
+    sparse_data = list(sparse)  
 n = int(sparse_data[-1][1])
 x = len(sparse_data)  # also, the number of edges
 CN = {}
@@ -21,7 +23,7 @@ for i in range(x):
     else:
         VN[sparse_data[i][1]] = [sparse_data[i][0]]
 CN = {int(k): [int(i) for i in v] for k, v in CN.items()}
-VN = {int(k): [int(i) for i in v] for k, v in VN.items()}
+VN = {int(k): [int(i) for i in v] for k, v in VN.items()} # Creating Ajacency list type struct for Tanner Graph
 
 CN_end = np.zeros(x, dtype='int16')
 VN_end = np.zeros(x, dtype='int16')
@@ -89,4 +91,5 @@ for i in range(n):
     else:
         c_hat[i] = 0
 
-print(np.matmul(c_hat, np.transpose(H_matrix)))
+print(np.matmul(c_hat, np.transpose(H_matrix)))  # Checking the syndrome
+
